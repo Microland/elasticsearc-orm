@@ -204,7 +204,7 @@ Multiple query conditions
 ```js
   let ret = await demoIndex
       .term('age', 12)
-      .match ('title',")
+      .match ('title',"")
       .query();
 ```
 must, should, not inquiry
