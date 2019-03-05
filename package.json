@@ -9,11 +9,12 @@
   "keywords": [
     "es",
     "elasticSearch",
-    "orm"
+    "orm",
+    "v1"
   ],
   "repository": {
     "type": "https",
-    "url": "https://github.com/Treagzhao/elasticsearc-orm"
+    "url": "https://github.com/Microland/elasticsearc-orm"
   },
   "author": "",
   "license": "MIT",
