@@ -1,6 +1,6 @@
 # elasticsearch - orm-a basic Elasticsearch query API
 
-[![npm package](https://nodei.co/npm/elasticsearch-orm.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/elasticsearch-orm/)
+[![npm package](https://nodei.co/npm/elasticsearch-orm-v1.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/elasticsearch-orm-v1/)
 
 ## Install
 ```bash
