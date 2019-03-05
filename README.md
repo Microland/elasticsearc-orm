@@ -3,10 +3,9 @@
 [![npm package](https://nodei.co/npm/elasticsearch-orm.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/elasticsearch-orm/)
 
 ## Install
-
-"'bash
-  npm install elasticsearch-orm
-"`
+```bash
+  npm install elasticsearch-orm-v1
+```
 
 ## Directory
 
@@ -26,8 +25,8 @@
 
 ## Create a connection
 
-`'js
-  const orm = require('elasticsearch-orm');
+```js
+  const orm = require('elasticsearch-orm-v1');
   const instance = orm({
       'domain':'127.0.0.1',
       'port':9200
@@ -40,15 +39,15 @@
   instance.on ('error', (e) =>{
     console.log('connection exception', e);
   });
-"`
+```
+
 ## Index related
 
 ### Create an index
 
 Generate an index type
 
-`'js
-
+```js
   const demoIndex = instance.register ('demoIndex',{
       'index': 'demoindex',
       'type':'demotype'
@@ -66,65 +65,64 @@ Generate an index type
         'number_of_shards': 2,
         'number_of_replicas': 4
       });
-
-"`
+```
 Synchronous index: if the index has not been created, it will follow mappings and settings`create 'index, if the index has been created, it will automatically determine which mappings are new, and these new mappings' add`to the index.the sync method returns a Promise object, so you can use the await keyword.
 
 
-`'js
+```js
    await demoIndex.sync.();
-"`
+```
 
 ### Index health values
-`'js
+```js
     const health = await demoIndex.health();
-"`
+```
 ### Index State
-`'js
+```js
     const stat = await demoIndex.stat.();
-"`
+```
 ### Index statistics
-`'js
+```js
     const state = await demoIndex.state();
-"`
+```
 ### SET index alias
-`'js
+```js
     const result = await demoIndex.alias (['alias_name']);
-"`
+```
 ### Remove alias
-`'js
+```js
     const result = await demoIndex.removeAlias (['alias_name']);
-"`
+```
 ### Refresh
-`'js
+```js
     const result = await demoIndex.refresh();
-"`
+```
 ### Rinse
-`'js
+```js
     const result = await demoIndex.flush.();
-"`
+```
 ### Force merge
-`'js
+```js
     const result = await demoIndex.forceMerge();
-"`
+```
 ### Test the word breaker
-`'js
+```js
     const result = await demoIndex.analyze ('I love Beijing Tiananmen', 'ik_max_word');
-"`
+```
 ### Open an index
-`'js
+```js
     const result = await demoIndex.open();
-"`
+```
 
 ### Close an index
-`'js
+```js
     const result = await demoIndex.close.();
-"`
+```
 
 ## Documentation related
 ### Create a document
 the create method returns a Promise object that uses the await keyword to return the newly created document ID
-`'js
+```js
 let id = await demoIndex.create({
     'title': 'Demo Title',
     'age', 12,
@@ -133,10 +131,10 @@ let id = await demoIndex.create({
       'lat':40.2
     }
   });
-"`
+```
 
 Specify the document ID to create the document
-`'js
+```js
   await demoIndex.create({
     'title': 'Demo Title',
     'age', 12,
@@ -145,9 +143,9 @@ Specify the document ID to create the document
       'lat':40.2
     }
   }, 'document_id');
-"`
+```
 Specifying a document routing
-`'js
+```js
   await demoIndex.create({
     'title': 'Demo Title',
     'age', 12,
@@ -156,52 +154,52 @@ Specifying a document routing
       'lat':40.2
     }
   }, 'document_id', 'routing_hash');
-"`
+```
 Specifying a parent node
-`'js
+```js
   await demoIndex.create({
     'title':'Title',
     'age':123
     }, null, null,{
       'parent': 'parent_id'
     })
-"`
+```
 ### Update documentation
-`'js
+```js
   await demoIndex.update ('docuemnt_id',{
     'title': "Demo Title 2",
     'age':13
   })
-"`
+```
 Specifying a document routing
-`'js
+```js
   await demoIndex.update ('document_id',{
     'title': 'Demo Title 2',
     'age':14
     }, 'routing_hash')
-"`
+```
 ### Delete document
-`'js
+``` js
   await demoIndex.delete(id);
   await demoIndex.delete (['id1', 'id2'])
-"`
+```
 ### Get documents by id
 If the id does not exist, an Error is returned
-`'js
+```js
   let doc = await demoIndex.get(id);
-"`
+```
 
 ## Query related
 ### Build simple queries
-`'js
+```js
     let ret = await demoIndex.query();
-"`
+```
 ret object returns even a child object, one is list, is the result of extracting a good _source array, the other is orgResult, is the original content returned by es
 ### Query conditions
 For a single query, see [query API] (#user-content-query api)
-`'js
+```js
   let ret = await demoIndex.term ('age', 12).query();
-"`
+```
 Multiple query conditions
 `'js
   let ret = await demoIndex

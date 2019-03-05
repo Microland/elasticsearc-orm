@@ -1,6 +1,7 @@
 {
   "name": "elasticsearch-orm-v1",
   "version": "1.0.30",
+  "version": "1.0.29",
   "description": "This is a orm for elasticSearch",
   "main": "es.js",
   "scripts": {
