@@ -201,31 +201,30 @@ For a single query, see [query API] (#user-content-query api)
   let ret = await demoIndex.term ('age', 12).query();
 ```
 Multiple query conditions
-`'js
+```js
   let ret = await demoIndex
       .term('age', 12)
       .match ('title',")
       .query();
-"`
+```
 must, should, not inquiry
-`'js
+```js
   const Condition = require("elasticsearch-orm-v1").Condition;
   let ret = await demoIndex
     .must (new Condition().term('age', 12))
     .should(new Condition().match ('title', 'Tiel'))
     .not (new Condition().exists('age'))
     .query();
-
-"`
+```
 filter query
-`'js
+```js
   const Condition = require("elasticsearch-orm-v1").Condition;
   let ret = await demoIndex
             .filter (new Condition().matchAll())
             .query();
-"`
+```
 ### Building nested queries
-`'js
+```js
 const Condition = require("elasticsearch-orm-v1").Condition;
 let condition = new Condition();
 condition.term('age', 12)
@@ -236,20 +235,20 @@ let ret = await demoIndex
     .should(condition)
     .exists ('location')
     .query();
-"`
+```
 
 ## Working with aggregations
 ### Use basic aggregation
 You can get the result of the aggregation through the orgresult object's original return value. see the complete aggregation API at [aggregation API] (#user-content-aggregation api)
-`'js
+```js
   const Aggs = require('elasticsearch-orm').Aggs.;
   let ret = await demoIndex
       .exists('age')
       .aggs(new Aggs('avg_age').avg('age'))
       .query();
-"`
+```
 ### Aggregated sub-aggregations
-`'js
+```js
   const Aggs = require('elasticsearch-orm').Aggs.;
   let aggs = new Aggs ('test_aggs').terms ('title');
   aggs.aggs(new Aggs('sub_aggs').valueCount('age'));
@@ -257,41 +256,41 @@ You can get the result of the aggregation through the orgresult object's origina
       .exist('age')
       .aggs(aggs)
       .query();
-"`
+```
 ## Pagination related
 ### Pagination
-`'js
+```js
   let ret = await demoIndex
       .from(0)
       .size (15)
       .query();
-"`
+```
 ### Use the scroll
 Initiate a scroll
-`'js
+```js
     await demoIndex.query({
         'scroll':'1m'
     })
-"`
+```
 Perform scrolling
-`'js
+```js
     await demoIndex.scroll(scrollId,{
         'scroll':'1m'
     });
-"`
+```
 Clear a scroll
-`'js
+```js
     await demoIndex.clearScroll(scrollId);
-"`
+```
 ### Sort
-`'js
+```js
   let ret = await demoIndex
       .sort ('age','asc')
       .sort ('title','asc', 'min')
       .query();
-"`
+```
 Or ...
-`'js
+```js
   let ret = await demoIndex
       .sort.({
           'age':{
@@ -300,82 +299,82 @@ Or ...
           }
       })
       .query();
-"`
+```
 ## Settings
 If debug is set to true, the request body, url, and return value of each request are printed
-`'js
+```js
   let instance = orm({
     'domain':'127.0.0.1',
     'port':9200
   });
   instance.set ("debug", true);
-"`
+```
 You can set the method of debug
-`'js
+```js
   instance.set ("log", console.log);
-"`
+```
 Set request timeout in milliseconds (default is 30s）
-`'js
+```js
   instance.set ('timeout', 5000);
-"`
+```
 ## Cluster-related interfaces
 ### Get cluster health values
-`'js
+```js
     const health = await instance.health();
-"`
+```
 ### Get cluster status
-`'js
+```js
     const state = await instance.state();
-"`
+```
 ### Get cluster statistics
-`'js
+```js
     const stat = await instance.stat.();
-"`
+```
 ### Get Index list
-`'js
+```js
     const result = await instance.indices();
-"`
+```
 ### Node information
-`'js
+```js
     const result = await instance.nodes();
-"`
+```
 ### Node status
-`'js
+```js
     const result = await instance.nodeStat ('node_id');
-"`
+```
 ### Close a node
-`'js
+```js
     const result = await instance.shutDown ('node_id');
-"`
+```
 
 ## Query API
 ### Text matching
 #### match query
-`'js
+```js
   let condition = new Condition();
   condition.match ('title', 'content1 content2');
   condition.match ('title', 'content1 content2',{
     'operator':'and'
     });
-"`
+```
 The generated query json is
-`'json
+```json
   {
     "match":{
         "title": "content1 content2",
         "operator": "and"
     }
   }
-"`
+```
 the field argument can be an array
-`'js
+```js
   condition.match (['title', 'description'], 'content1 content2');
   condition.match (['title', 'description'], 'content1 content2',{
       'type': 'best_fields'
     });
-"`
+```
 The generated query json is
-`'json
+```json
   {
     "multi_match":{
         "query": "content1 content2",
@@ -383,17 +382,17 @@ The generated query json is
         "fields": ["title","description"]
     }
   }
-"`
+```
 #### Phrase query matchPhrase and matchPhrasePrefix
-`'js
+```js
 condition.matchPhrase('title', 'content1 content2');
 condition.matchPrasePrefix ('title', 'content1 content2');
 condition.matchPhrase('title', 'content1 content2',{
   'analyzer': 'test_analyzer'
   });
-"`
+```
 Generate query json
-`'json
+```json
   {
     "match_phrase":{
       "title":{
@@ -409,15 +408,15 @@ Generate query json
       }
     }
   }
-"`
+```
 ### Exact value
 #### term query
-`'js
+```js
 condition.term('age', 13);
 condition.term('age',[13,15]);
-"`
+```
 Generate query json
-`'json
+```json
   {
     "term.":{
         "age": 13
@@ -428,14 +427,14 @@ Generate query json
         "age":[13,15]
     }
   }
-"`
+```
 #### exists query
-`'js
+```js
 condition.exists('age');
 condition.exists (['age','title']);
-"`
+```
 Generating json
-`'json
+```json
 {
   "exists.":{
     "field": "age"
@@ -446,16 +445,16 @@ Generating json
     "fields":["age", " title"]
   }
 }
-"`
+```
 #### range query
-`'js
+```js
 condition.range('age', 1);
 condition.range('age',1, 10);
 condition.range('age', null, 10);
 condition.range('age', 1, 10, true, false);
-"`
+```
 Generating json
-`'json
+```json
   {
     "range.":{
         "age":{
@@ -486,27 +485,27 @@ Generating json
         }
     }
   }
-"`
+```
 Using the Range object
-`'js
+```js
 const Range = require ('elasticsearch-orm').Range.();
 let range = new Range(1);
 range = new Range(1,10);
 range = new Range(1,10, false, true);
 range = new Range(). gt(1,true). lt (10, false);
 condition.range(range);
-"`
+```
 #### prefix, wildcard and fuzzy
-`'js
+```js
 condition.prefix ('title', 'Tre');
 condition.wildcard ('title', 'Tre * hao');
 condition.fuzzy ('title',{
   'value': 'ki',
   'boost':1.0
 })
-"`
+```
 Generating json files
-`'json
+```json
 {
   "prefix":{
     "title": "Tre"
@@ -525,10 +524,10 @@ Generating json files
     }
   }
 }
-"`
+```
 ### Geographic location query
 #### geoShape
-`'js
+```js
 condition.geoShape ('location','circle',
   [{
   'lon': 100.0,
@@ -538,9 +537,9 @@ condition.geoShape ('location','circle',
     'radius': "100m",
     "relation": "within"
     })
-"`
+```
 Generating json
-`'json
+```json
   {
     "geo_shape":{
         "location":{
@@ -555,16 +554,16 @@ Generating json
         }
     }
   }
-"`
+```
 #### geoDistance
-`'js
+```js
   condition.geoDistance ('location',{
     'lon': 100.0,
     'lat':31.0
     }, '100m');
-"`
+```
 Generating json
-`'json
+```json
   {
     "geo_distance":{
       "distance": "100m",
@@ -574,9 +573,9 @@ Generating json
       }
     }
   }
-"`
+```
 #### geoPolygon
-`'js
+```js
 condition.geoPolygon ('location',[{
   'lon': 100.0,
   'lat':41.1
@@ -587,9 +586,9 @@ condition.geoPolygon ('location',[{
      'lot':102.3,
      'lat':42.4
     }])
-"`
+```
 Generating json
-`'json
+```json
 {
   "geo_polygon.":{
       "location":{
